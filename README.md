@@ -24,11 +24,7 @@ The experiment was conducted on Amazon's Mechanical Turk platform using a modifi
 version of [Otree](https://github.com/oTree-org/oTree), a platform for social science
 experiments.
 
-The source code for the experiment will be added to this repository for
-replicability and further experimentation.
-
-
-To run:
+You can run the experiment for yourself using the following commands:
 
 ```
 cd src
@@ -36,3 +32,5 @@ pip3 install -U otree-core
 otree resetdb
 otree runserver
 ```
+
+See the [Otree](https://github.com/oTree-org/oTree) documentation for more details.
