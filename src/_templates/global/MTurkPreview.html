@@ -1,0 +1,28 @@
+{% extends "otree/Page.html" %}
+{% load otree %}
+
+{% block title %}Please read this before clicking "Accept"{% endblock %}
+
+{% block content %}
+    <p>
+        This HIT is an academic experiment on a text classification task.
+    </p>
+
+    <p>
+        It will require you to interact with other participants in real time.
+        Each round is timed, and you should answer each question before the timer
+        expires. If you finish before other participants, you will need to wait
+        until everyone finishes OR the timer expires (whichever comes first).
+        There is no advantage for speed of completion, and rather, maximum points
+        will be awarded for accuracy.
+
+        Please only accept ths HIT only if you can commit to completing it. The
+        estimated time for completion includes the maximum time allocated for all
+        rounds.
+    </p>
+
+    <p>
+        After completing this HIT, you will receive your reward plus a bonus payment
+        that is based on your performance in the experiment.
+    </p>
+{% endblock %}

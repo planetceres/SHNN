@@ -1,0 +1,474 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+
+{% block title %}
+    Question {{ player.round_number }} of {{ Constants.num_rounds }}
+{% endblock %}
+
+
+{# <!-- Slider script --> #}
+{% block styles %}
+<link href="{% static "shnn/jquery-ui/jquery-ui.min.css" %}" rel="stylesheet">
+<style type="text/css">
+    .est-slider {
+        margin: 1.5em auto;
+        width: 70%;
+
+        /* Gradient for slider */
+        background: -moz-linear-gradient(left, #B2182B 0%, #EF8A62 17%, #FDDBC7 33%, #F7F7F7 50%,  67%, #67A9CF 83%,  #2166AC 100%);
+        background: -ms-linear-gradient(left, #B2182B 0%, #EF8A62 17%, #FDDBC7 33%, #F7F7F7 50%,  67%, #67A9CF 83%,  #2166AC 100%);
+        background: -o-linear-gradient(left, #B2182B 0%, #EF8A62 17%, #FDDBC7 33%, #F7F7F7 50%,  67%, #67A9CF 83%,  #2166AC 100%);
+        background: -webkit-linear-gradient(left, #B2182B 0%, #EF8A62 17%, #FDDBC7 33%, #F7F7F7 50%,  67%, #67A9CF 83%,  #2166AC 100%);
+        background: linear-gradient(to left, #B2182B 0%, #EF8A62 17%, #FDDBC7 33%, #F7F7F7 50%,  67%, #67A9CF 83%,  #2166AC 100%);
+    }
+
+    .mean-slider {
+        /*display: none;*/
+        margin: 1.5em auto;
+        width: 70%;
+
+        /* Gradient for slider */
+        background: -moz-linear-gradient(left, #B2182B 0%, #EF8A62 17%, #FDDBC7 33%, #F7F7F7 50%,  67%, #67A9CF 83%,  #2166AC 100%);
+        background: -ms-linear-gradient(left, #B2182B 0%, #EF8A62 17%, #FDDBC7 33%, #F7F7F7 50%,  67%, #67A9CF 83%,  #2166AC 100%);
+        background: -o-linear-gradient(left, #B2182B 0%, #EF8A62 17%, #FDDBC7 33%, #F7F7F7 50%,  67%, #67A9CF 83%,  #2166AC 100%);
+        background: -webkit-linear-gradient(left, #B2182B 0%, #EF8A62 17%, #FDDBC7 33%, #F7F7F7 50%,  67%, #67A9CF 83%,  #2166AC 100%);
+        background: linear-gradient(to left, #B2182B 0%, #EF8A62 17%, #FDDBC7 33%, #F7F7F7 50%,  67%, #67A9CF 83%,  #2166AC 100%);
+    }
+
+    .est {
+        text-align: center;
+    }
+
+    /*Hides radio buttons*/
+    .controls ul {
+      display: none;
+    }
+
+    /*This adds an arrow on the user's slider*/
+    /*.ui-slider-handle.ui-state-default.ui-corner-all {
+      background: none;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-top: 10px solid #000;
+      border-bottom: none;
+      margin-top: -6px;
+    }*/
+
+
+    /*Replaces the handle with an arrow on the slider from the previous layer estimate*/
+    .mean-slider .ui-slider-handle.ui-state-default.ui-corner-all {
+      background: none;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-top: 10px solid #000;
+      border-bottom: none;
+      margin-top: -6px;
+    }
+
+    .mean-slider.ui-slider-horizontal {
+      height: .3em;
+    }
+
+    .slider-class-labels {
+      margin: 1.5em auto;
+      width: 70%;
+    }
+
+    .negative-label-left {
+      float: left;
+      font-weight: 500;
+    }
+
+    .neutral-label-center {
+      text-align: center;
+      margin:0 auto;
+      font-weight: 500;
+    }
+
+    .positive-label-right {
+      /*text-align: right;*/
+      float: right;
+      font-weight: 500;
+    }
+
+    .subfield-indent {
+      margin-left: 40px;
+    }
+
+    .comparison-pane {
+      background: #f1f1f1;
+      margin: 80px 0px 40px 0px;
+    }
+
+    .comparison-pane hr {
+      border-top: 1px solid #d8d8d8;
+      width: 94%;
+    }
+
+    /*.est-slider.ui-slider {
+      display: none;
+    }*/
+
+    #circle {
+        width:40px;
+        height:40px;
+        margin:10px auto;
+        border-radius:50%;
+        font-size:12px;
+        color:#000;
+        line-height:100px;
+        text-align:center;
+        border: 1px solid #5a5a5a;
+    }
+
+    .layer-prev {
+        width:20px;
+        height:20px;
+        /*margin:10px 50px;*/
+        margin: 10px 10px 10px 40px;
+        border-radius:50%;
+        border: 1px solid #5a5a5a;
+    }
+
+    .layer-prev-class {
+        margin: 10px 10px 10px 40px;
+    }
+
+    .layer-prev-mean {
+        width:40px;
+        height:40px;
+        /*margin:10px auto;*/
+        /*margin:10px 50px;*/
+        border-radius:50%;
+        font-size:12px;
+        color:#000;
+        line-height:100px;
+        text-align:center;
+    }
+
+    #layer-prev-mean {
+      position: relative;
+      top: 50%;
+      left: 50%;
+      margin: 30px -20px;
+      border: 1px solid #5a5a5a;
+    }
+
+    .prev-layer-value {
+      padding-left: 40px;
+    }
+
+    .prev-layer-mean {
+      text-align: center;
+    }
+
+    .select-hide {
+      display: none;
+    }
+
+    .title-center {
+      text-align: center;
+    }
+
+    th.title-center {
+      text-align: center;
+    }
+
+    .question-text {
+       color: #333333;
+       font-family: "Helvetica Neue",Arial,sans-serif;
+       font-size: 15px;
+       font-weight: 300;
+       line-height: 1.5625;
+       margin-bottom: 15px;
+       padding: 5px;
+       border: #D3D3D3;
+       border-style: solid;
+       border-width: 1px;
+       border-radius: 5px;
+       background: #F0F2F2
+     }
+
+</style>
+{% endblock %}
+{# <!-- End slider script --> #}
+
+
+{% block content %}
+
+    {% formfield player.food label='Food item' %}
+
+    {% formfield player.drug label='Drug item'%}
+
+    <p><strong>Question:</strong></p>
+
+    <div class="question-text">{{player.question}}</div>
+
+    <!-- Slider script -->
+    <div class="form-group required">
+        <label class="control-label" for="id_est_amount">
+            Instructions: </label>
+        <p>Please estimate whether the effect of the interaction is most likely Negative (blue), Neutral (white) or Positive (red). Move the slider to the position of your guess. Click "Next" at the bottom of the page to submit your answer. </p>
+        <div class="controls">
+            <div class="slider-class-labels">
+              <div class="negative-label-left">
+                Negative
+              </div>
+              <div class="positive-label-right">
+                Positive
+              </div>
+              <div class="neutral-label-center">
+                Neutral
+              </div>
+            </div>
+            <input type="hidden" name="class_estimate" id="id_est_amount" value="0">
+            <!-- mean-slider is for comparing average slider position from the previous layer to  -->
+            <!-- <div class="<div class="mean-slider"></div>"></div> -->
+            <div class="est-slider"></div>
+            <div class="est select-hide">Your estimate: <strong><span class="est-value"></span></strong></div>
+            <div id="circle" class="select-hide"></div>
+
+        </div>
+    </div>
+    <!-- End slider script -->
+
+    <!-- Previous Layer Results -->
+    <div class="select-hide">
+
+      <!-- If this is a treatment layer  -->
+      {% if subsession.net_layer > 1 %}
+      <div class="comparison-pane">
+        <br>
+        <div class="subfield-indent">
+          <h5>
+            <strong>Below are the estimates from other participants on your team:</strong>
+          </h5>
+        </div>
+        <!-- <hr> -->
+        <br>
+        <div class="controls">
+            <div class="slider-class-labels">
+              <div class="negative-label-left">
+                Negative
+              </div>
+              <div class="positive-label-right">
+                Positive
+              </div>
+              <div class="neutral-label-center">
+                Neutral
+              </div>
+            </div>
+            <div class="mean-slider"></div>
+
+        </div>
+          <p>
+            <table class="prev-layer-mean" style="width:100%">
+              <tr>
+                <th colspan="3" class="title-center">All Participants</th>
+              </tr>
+              </tr>
+                <td>
+                    <div id="layer-prev-mean" class="layer-prev-mean"></div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <!-- Mean of last layer: {{ layer_mean }} -->
+                    <div> Average guess: <strong><span id="prev-val-mean"></span></strong></div>
+                </td>
+              <tr>
+          <table>
+          </p>
+          <br>
+          <hr>
+          <br>
+          <p>
+            <table class="layer-nresults">
+              <tr>
+                <th colspan="3" class="title-center">Individual Participants</th>
+              </tr>
+              {% for layer in layer_prev %}
+
+                <tr>
+                  <td>
+                    <div class="prev-layer-value">Participant {{forloop.counter}} guess:  </div>
+                  </td>
+                  <td>
+                    <div class="layer-prev-class">
+                      <strong>
+                        <span id="prev-val-{{forloop.counter}}"></span>
+                      </strong>
+                    </div>
+                  </td>
+                  <td>
+                      <div id="layer-prev-{{forloop.counter}}" class="layer-prev"></div>
+                  </td>
+                  <td>
+                      <div id="prev-val-est-{{forloop.counter}}"></div>
+                  </td>
+                </tr>
+
+              {% endfor %}
+            </table>
+          </p>
+          <br>
+          <!-- <hr> -->
+        </div>
+
+        <div class="select-hide">
+          <p>
+            Would you like to revise your answer?
+            <ul>
+              <li>If <strong>yes</strong>, make changes above before clicking "Next"</li>
+              <li>If <strong>no</strong>, click "Next" to proceed</li>
+            </ul>
+          </p>
+          <br>
+        </div>
+      {% endif %}
+      <!-- End Previous Layer Results -->
+    </div>
+
+    {% next_button %}
+
+    <!-- Development Info -->
+    <!-- <br><br>
+    <p><strong>Development Info: </strong></p>
+    <p>Current Network Layer: {{ subsession.net_layer }} </p>
+    <p><strong>This question:</strong></p>
+    <p>Current Question ID: {{ player.question_id }} </p>
+    <p>Current Question: {{ player.question }} </p>
+    <p>Layer last round: {{ layer_prev }}</p>
+    <p><strong>This player:</strong></p>
+    <p>Player Experiment Assignment: {{ player.group_id_for_round }} </p>
+    <p>Player response from prev question: {{ player_prev }}</p> -->
+
+    <!-- End Development Info -->
+
+{% endblock %}
+
+
+{# <!-- Slider script --> #}
+{% block scripts %}
+<script src="{% static "shnn/jquery-ui/jquery-ui.min.js" %}"></script>
+<script>
+jQuery(document).ready(function ($) {
+    var input = $('#id_est_amount');
+
+    $('.est-slider').slider({
+        min: {{ Constants.class_scale_min|json }},
+        max: {{ Constants.class_scale_max|json }},
+        // Comment out value to use 0 as default setting for slider
+        value: {{ layer_mean|json }}, // set slider to average from previous layer
+        slide: function (event, ui) {
+            input.val(ui.value);
+            updateEstValue();
+            updateEstNumValue();
+            $('.select-hide').show()
+        },
+        stop: function( event, ui ) {
+            var slider_pos = ui.value;
+
+            // Change color of circle
+            bg_color = getColorGradient(slider_pos)
+            $('#circle').css('background',bg_color);
+        }
+    });
+
+    // This is for the currently hidden slider that shows the mean value of previous layers
+    $('.mean-slider').slider({
+        min: {{ Constants.class_scale_min|json }},
+        max: {{ Constants.class_scale_max|json }},
+        value: {{ layer_mean|json }},
+        slide: function(event, ui){
+          $('.mean-slider').slider('value', {{ layer_mean|json }});
+        },
+        // Fix the value for the slider to avoid confusion
+        stop: function(event, ui){
+          $('.mean-slider').slider('value', {{ layer_mean|json }});
+        },
+    });
+
+    function updateEstValue() {
+      var class_text = sliderToClass(input.val());
+      $('.est-value').text(class_text);
+    }
+
+    function updateEstNumValue() {
+      $('#circle').text(input.val());
+    }
+
+    function sliderToClass(sliderVal){
+      if (sliderVal < -33){
+        $("#id_submitted_answer_3").prop("checked", true);
+        className = "Negative"
+      } else if (sliderVal > 33) {
+        $("#id_submitted_answer_1").prop("checked", true);
+        className = "Positive"
+      } else {
+        $("#id_submitted_answer_2").prop("checked", true);
+        className = "Neutral"
+      }
+      return className
+    }
+
+    // Function to calculate color gradient from position of slider
+    function getColorGradient(val) {
+
+        // Calculate color based on slider gradient
+        if (val < 0) {
+          var col_red = Math.floor(247 + ((247-33)/100)*val)
+          var col_green = Math.floor(247 + ((247-102)/100)*val)
+          var col_blue = Math.floor(247 + ((247-172)/100)*val)
+        } else {
+          var col_red = Math.floor(247 - ((247-178)/100)*val)
+          var col_green = Math.floor(247 - ((247-24)/100)*val)
+          var col_blue = Math.floor(247 - ((247-43)/100)*val)
+        }
+
+        // Format to RGB
+        bg_color = 'rgb(' + col_red + ', ' + col_green + ',' + col_blue + ')'
+        return bg_color
+    }
+
+    // Change colors for each node of previous layer
+    function updatePrevLayerValue() {
+      var prev_layers = {{ layer_prev|json }}
+      for (i = 0; i < prev_layers.length; i++){
+        var layer_n = prev_layers[i].estimate
+        var el = '#layer-prev-' + (i+1)
+        var el = $(el)
+        el.css('background',getColorGradient(layer_n));
+
+        var el2 = '#prev-val-' + (i+1)
+        var el2 = $(el2)
+        el2.text(sliderToClass(layer_n));
+        var el3 = '#prev-val-est-' + (i+1)
+        var el3 = $(el3)
+        el3.text(layer_n);
+
+      }
+    }
+
+    // Change colors for mean of previous layer
+    function updateMeanValue() {
+      var prev_mean = {{ layer_mean|json }}
+      var layer_n = prev_mean
+      var el = '#layer-prev-mean'
+      var el = $(el)
+      el.css('background',getColorGradient(layer_n));
+      el.text(layer_n);
+
+      var el2 = '#prev-val-mean'
+      var el2 = $(el2)
+      el2.text(sliderToClass(layer_n));
+    }
+
+    // Call graphical update functions
+    updatePrevLayerValue()
+    updateMeanValue()
+    updateEstValue();
+});
+</script>
+{% endblock %}
+{# <!-- End slider script --> #}

@@ -26,3 +26,13 @@ experiments.
 
 The source code for the experiment will be added to this repository for
 replicability and further experimentation.
+
+
+To run:
+
+```
+cd src
+pip3 install -U otree-core
+otree resetdb
+otree runserver
+```

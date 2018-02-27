@@ -1,0 +1,135 @@
+{% extends "otree/Page.html" %}
+{% load otree %}
+
+{% block title %}Hello! Please read this before clicking "Accept"{% endblock %}
+
+{% block content %}
+    <h3 id="summary">Summary</h3>
+    <p>
+        This HIT is an academic experiment on text classification.
+    </p>
+
+    <p>
+        You will be completing a classification task to determine the relationships between a food item and a drug compound. A pair of food
+        item and drug compounds will be presented to you, along with a sentence
+        taken from medical literature that provides information about how the
+        pair is related.
+    </p>
+
+    <h3 id="task">Task</h3>
+    <p>
+        You will classify the relationship as one of three categories:
+    </p>
+    <ol>
+      <li><strong>Positive</strong>
+        <ul>
+          <li>The food item increases the efficacy of the drug.</li>
+          <li>The drug helps the absorption of the food item.</li>
+          <li>The food item contains the drug compound.</li>
+        </ul>
+      </li>
+      <li><strong>Negative</strong>
+        <ul>
+          <li>The food compound decreases the efficacy of the drug.</li>
+          <li>The drug compound inhibits the absorption of the food item.</li>
+        </ul>
+      </li>
+      <li><strong>Neutral</strong>
+        <ul>
+          <li>There is no indication whether the food item increases or decreases the efficacy of the drug.</li>
+          <li>The food item and the drug compound occur in the same sentence but whether their relationship is positive or negative is undetermined.</li>
+        </ul>
+      </li>
+    </ol>
+
+
+    <h3 id="example">Example</h3>
+    <table>
+      <thead>
+      <tr>
+        <th>Interaction</th>
+          <th style="text-align:center">Food item</th>
+          <th style="text-align:right">Drug compound</th>
+          <th style="text-align:right">Sentence</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+        <td>Negative</td>
+        <td style="text-align:center">unsaturated fatty acids</td>
+        <td style="text-align:right">isoniazid</td>
+        <td style="text-align:right">Both long- and short-term exposure experiments showed that isoniazid inhibited the synthesis of saturated fatty acids greater than C26 and of unsaturated fatty acids greater than C24.</td>
+        </tr>
+      <tr>
+        <td>Neutral</td>
+        <td style="text-align:center">vitamin D3</td>
+        <td style="text-align:right">digoxin</td>
+        <td style="text-align:right">The median for digoxin T(max) was 0.75 h before and after vitamin D3 ingestion.</td>
+      </tr>
+        <tr>
+          <td>Positive</td>
+          <td style="text-align:center">curcumin</td>
+          <td style="text-align:right">GLP-1</td>
+          <td style="text-align:right">Our previous studies demonstrated that curcumin (a yellow pigment of turmeric) significantly increases the secretion of GLP-1 in enteroendocrine L cell line (GLUTag cells).</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 id="instructions">Instructions</h3>
+    <p>
+        Please drag the slider to the position along the axis that indicates
+        your selection. To the left for &quot;negative&quot;, to the right for
+        &quot;positive&quot;, and centered for &quot;neutral&quot;.
+    </p>
+    <p>
+        Your selection will be described below the slider, and you should
+        indicate that you are more confident of an answer by moving the slider
+        further to the extremes (i.e. if you think an example pairing is very
+        likely to be positive, you should move the slider to the far right).
+    </p>
+
+    <p>
+        You will have exactly 60 seconds to make your selection.
+    </p>
+
+    <h3 id="time">Time and Compensation</h3>
+
+    <p>
+        Each question will be considered a &quot;round&quot; where you will see
+        a countdown timer. You must submit your answer before the timer expires.
+        If you finish early, you will need to wait until the timer counts down
+        to 0 before proceeding to the next round, so <strong>there is no payout
+        advantage to speed of completion</strong>.
+    </p>
+    <p>
+        <strong>Correct answers</strong> will earn you a bonus on top of the
+        base rate, so you should ensure that you read each question carefully.
+    </p>
+    <p>
+        <strong>It is important that you click on the &quot;Next&quot; button
+          before the timer expires in order to submit your answer. If you do not
+          click &quot;Next&quot; your answer will not be recorded.</strong>
+    </p>
+    <p>
+        There will be [3] total rounds. You must complete all three to receive
+        compensation. </p>
+
+    <h3 id="time">Additional Info</h3>
+    <p>
+        You may be required to interact with other participants in real time.
+
+        Please only accept this HIT if you can commit to completing it. The
+        estimated time for completion includes the maximum time allocated for all
+        rounds.
+    </p>
+
+    <p>
+        After completing this HIT, you will receive your reward plus a bonus payment
+        that is based on your performance in the experiment.
+    </p>
+
+    <h3 id="start-task">Start Task</h3>
+    <p>
+      <strong>I understand the instructions and am ready to proceed.</strong>
+    </p>
+{% endblock %}

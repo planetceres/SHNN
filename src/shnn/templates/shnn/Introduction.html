@@ -1,0 +1,94 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+
+{% block styles %}
+<link href="{% static "shnn/jquery-ui/jquery-ui.min.css" %}" rel="stylesheet">
+<style type="text/css">
+
+a#finish_study {
+    color: #ca4242;
+    text-decoration: underline;
+    cursor: pointer;
+}
+</style>
+{% endblock %}
+
+{% block title %}
+Welcome
+{% endblock %}
+
+
+
+{% block content %}
+<div class="time-expired-sorry" style="display:none;">
+  The experiment has already begun, and it is too late to join. Sorry!
+</div>
+<div class="page-content">
+  <div id="otree-timeout-warning" class="alert alert-warning" style="display:block;">
+      <p>The experiment begins in :
+          <span class="glyphicon glyphicon-time"></span>
+          <strong><span id="otree-timer__time-left"></span></strong>
+      </p>
+      <p>You must agree to participate by clicking "Next" at the bottom of the page <strong>before the timer expires</strong>
+      </p>
+  </div>
+  {% include Constants.welcome_template %}
+  {% formfield player.proceed_confirmation label='I understand the task and agree to complete the experiment to the best of my ability' %}
+  {% next_button %}
+
+  <br>
+  <br>
+  <form action="" method="post" role="form" class="form">
+      {% csrf_token %}
+      <a id='finish_study' name="endofgame" value="{{ player.pk }}">
+          Leave and Exit
+      </a> <span id="finish_study_text"> (Clicking this will remove you from the experiment)</span>
+      <br>
+  </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+
+<script src="{% static 'otree/js/jquery.countdown.min.js' %}"></script>
+<script type="text/javascript">
+
+    {#        $('div#otree-timeout').show();#}
+    $('div.otree-timer').hide()
+    var currentDate = new Date();
+    var milliseconds = Math.floor({{ time_left|json }} * 1000)
+    console.log(milliseconds)
+    ;
+    if (!(milliseconds > 0)){
+      $("div.time-expired-sorry").show();
+    }
+    $('#finish_study').show();
+    $('#finish_study_text').show();
+    $('#finish_study').on('click', function(event){
+      $("#id_proceed_confirmation_2").prop("checked", true);
+    })
+    $('div#otree-timeout-warning').show();
+    $('span#otree-timer__time-left').countdown(currentDate.valueOf() + milliseconds)
+        .on('update.countdown', function (event) {
+            // %-N is "Total count of minutes till the end, non-padded"
+            // %S is seconds left
+            var format = '%-N:%S';
+            var remainingTime = event.strftime(format);
+            $(this).html(remainingTime);
+
+            // if (event.strftime('%-M') > 30) {
+            //     // Do not show if max waiting time is above 30 minutes
+            //     $('div#otree-timeout-warning').filter(":visible").hide(duration = 0);
+            // }
+            // ;
+
+        })
+        .on('finish.countdown', function (event) {
+            $('div#otree-timeout-warning').hide(duration = 0);
+            $("#id_proceed_confirmation_2").prop("checked", true);
+            $("div._otree-content .page-content").hide();
+            $("div._otree-content .time-expired-sorry").show();
+        });
+
+</script>
+{% endblock %}

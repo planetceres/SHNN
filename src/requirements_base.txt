@@ -1,0 +1,6 @@
+otree-core[mturk]>=1.4.28
+
+# Heroku requires Django to be explicitly in requirements file
+# in order to run collectstatic
+Django==1.8.8
+django-radiogrid

@@ -1,0 +1,66 @@
+{% extends 'otree_mturk_utils/GenericExtendedWaitPage.html' %}
+{% load staticfiles otree_tags %}
+{% block title %}Please wait!{% endblock %}
+{% block styles %}
+
+    <style>
+        #left_to_wait {
+            font-weight: bold;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+
+
+
+    <div id="otree-timeout-warning" class="alert alert-warning" style="display:block;">
+        <p>The experiment begins in:
+            <span class="glyphicon glyphicon-time"></span>
+            <strong><span id="otree-timer__time-left"></span></strong>
+        </p>
+    </div>
+
+    <div id="experiment-starting" style="display: none;">
+        <p>Loading experiment...
+        </p>
+
+    </div>
+
+{% if use_task %}
+    {% include task_to_show.html %}
+
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+    {% include 'otree_mturk_utils/waiting_page_channel.js.html' %}
+    <script src="{% static 'otree/js/jquery.countdown.min.js' %}"></script>
+
+    <script type="text/javascript">
+
+        {#        $('div#otree-timeout').show();#}
+        var currentDate = new Date();
+        var milliseconds = Math.floor({{ time_left|json }} * 1000);
+        if (!(milliseconds > 0)){
+          $('div#experiment-starting').show();
+        }
+        $('div#otree-timeout-warning').show();
+        $('span#otree-timer__time-left').countdown(currentDate.valueOf() + milliseconds)
+            .on('update.countdown', function (event) {
+                // %-N is "Total count of minutes till the end, non-padded"
+                // %S is seconds left
+                var format = '%-N:%S';
+                var remainingTime = event.strftime(format);
+                $(this).html(remainingTime);
+
+            })
+            .on('finish.countdown', function (event) {
+                $('div#otree-timeout-warning').hide(duration = 0);
+                // $('#finish_study').show();
+                // $('#finish_study_text').show();
+            });
+
+
+    </script>
+
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends 'otree_mturk_utils/GenericExtendedWaitPage.html' %}
+{% load staticfiles otree_tags %}
+{% block title %}Please wait!{% endblock %}
+{% block styles %}
+    <style>
+        #left_to_wait {
+            font-weight: bold;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+
+    <div>
+      <p>{{ body_text }}</p>
+      <!-- <p>If this page doesn't advance after {{ timeout_seconds }} seconds, you will be compensated ${{ waiting_bonus }} per minute of waiting time afterward.</p> -->
+    </div>
+    <br/>
+
+
+    <div id="otree-timeout-warning" style="display:block;">
+        <p>This page will proceed automatically in <strong>less than</strong>:
+            <span class="glyphicon glyphicon-time"></span>
+            <strong><span id="otree-timer__time-left"></span></strong>
+        </p>
+    </div>
+
+    <form action="" method="post" role="form" class="form">
+        {% csrf_token %}
+        <div>
+            <button class="btn btn-danger" id='finish_study'
+                    style="display: none;"
+                    name="endofgame" value="{{ player.pk }}">
+                Stop Waiting
+            </button> <span id="finish_study_text" style="display: none;">(Pressing this button will remove you from the experiment)</span>
+        </div>
+        <br>
+    </form>
+{% if use_task %}
+    {% include task_to_show.html %}
+
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+    {% include 'otree_mturk_utils/waiting_page_channel.js.html' %}
+    <script src="{% static 'otree/js/jquery.countdown.min.js' %}"></script>
+    <script type="text/javascript">
+
+        {#        $('div#otree-timeout').show();#}
+        var currentDate = new Date();
+        var milliseconds = Math.floor({{ time_left|json }} * 1000
+        )
+        ;
+        $('div#otree-timeout-warning').show();
+        $('span#otree-timer__time-left').countdown(currentDate.valueOf() + milliseconds)
+            .on('update.countdown', function (event) {
+                // %-N is "Total count of minutes till the end, non-padded"
+                // %S is seconds left
+                var format = '%-N:%S';
+                var remainingTime = event.strftime(format);
+                $(this).html(remainingTime);
+
+                // if (event.strftime('%-M') > 30) {
+                //     // Do not show if max waiting time is above 30 minutes
+                //     $('div#otree-timeout-warning').filter(":visible").hide(duration = 0);
+                // }
+                ;
+
+            })
+    </script>
+
+{% endblock %}
