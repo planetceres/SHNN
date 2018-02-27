@@ -17,7 +17,7 @@ else:
     DEBUG = True
 
 # don't share this with anybody.
-SECRET_KEY = 'zu4rrhuye)%8y#yqaxk9!$yianljgjm@_r54bi&-$71_*sl0p&'
+SECRET_KEY = '{{ secret_key }}'
 
 
 DATABASES = {
