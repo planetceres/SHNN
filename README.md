@@ -15,6 +15,9 @@ that human networks might perform more accurate classifications simply as a resu
 units acting as nodes are structurally configured.
 
 
+![Network Design](./img/network_design_a.png)
+
+
 ### Code
 
 The experiment was conducted on Amazon's Mechanical Turk platform using a modified
