@@ -10,8 +10,8 @@ The paper can be downloaded in pdf format here:
 In order to explore how information moves through human networks we use a
 structured network design from artificial neural networks to impose
 a deliberate structure on human networks. This acts to quantify how strategic arrangement
-might affect information transmission between units in a coordinated task. We hypothesize
-that human networks might perform more accurate classifications simply as a result of how
+might affect information transmission between units in a coordinated task. We hypothesize
+that human networks might perform more accurate classifications simply as a result of how
 units acting as nodes are structurally configured.
 
 
