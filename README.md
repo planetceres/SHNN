@@ -2,6 +2,9 @@
 
 This repository holds the source code for a research experiment conducted in 2017 called the Supervised Human Neural Network (SHNN).
 
+The paper can be downloaded in pdf format here:
+[Supervised_Human_Neural_Network.pdf]('./Supervised_Human_Neural_Network.pdf')
+
 ### Summary
 
 In order to explore how information moves through human networks we use a
